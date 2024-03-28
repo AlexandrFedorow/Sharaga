@@ -1,5 +1,3 @@
-
-
 def is_it_good(a):
     p = []
     m = 0
@@ -12,17 +10,15 @@ def is_it_good(a):
         return True
     return False
 
-def check_epsilon(x0, x1, e):
-    ctr = 0
-    for i in range(len(x0)):
-        if abs(x1[i]-x0[i]) < e:
-            ctr += 1
-            if ctr == 4:
-                print('ff')
-                return False
-            else:
-                ctr = 0
-    return True
+
+def equ(x, a, b):
+    x0 = [0, 0, 0, 0]
+
+    for i in range(len(a)):
+        for j in range(len(a[i])):
+            x0[i]+=a[i][j]*x[j]
+        x0[i]+=b[i]
+    return x0
 
 
 a = [
@@ -35,24 +31,11 @@ a = [
 b = [2.7, -1.5, 1.2, -0.17]
 epsilon = 1e-4
 
-x0 = [i for i in b]
-x1 = [0, 0, 0, 0]
-x2 = x1
-
+x = [i for i in b]
 
 if is_it_good(a):
-    while check_epsilon(x0, x2, epsilon):
-        print('gg')
+    while max([abs(x[i]-equ(x,a,b)[i]) for i in range(4)])>epsilon:
 
-        for i in range(len(a)):
-            for j in range(len(a[i])):
-                x1[i] += a[i][j]*x0[j]
-            x1[i] += b[i]
-        print(x0)
-        x0 = x1
-        x2 = x1
-        print(x2)
-        x1 = [0, 0, 0, 0]
+        x = equ(x,a,b)
+        print(x)
 
-
-print(x2)
