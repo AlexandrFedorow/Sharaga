@@ -86,7 +86,7 @@ def make_coords(r, h, hi, hd, hpvo, ch):
     return coords
 
 
-def plot_points(points1, points2, title, subplot, ch):
+def plot_points(points1, points2, title, subplot, ch, xl, yl):
     x_vals = [point for point in points1[0]]
     y_vals = [point for point in points1[1]]
 
@@ -94,18 +94,18 @@ def plot_points(points1, points2, title, subplot, ch):
     if ch:
         x_vals = [point for point in points2[0]]
         y_vals = [point for point in points2[1]]
-        subplot.plot(x_vals, y_vals, color='red')
+        subplot.plot(x_vals, y_vals, color='blue')
 
-    subplot.set_xlim(min(x_vals), max(x_vals))
-    subplot.set_ylim(min(y_vals), max(y_vals))
+        subplot.set_xlim(min(x_vals), max(x_vals)+1000)
+        subplot.set_ylim(min(y_vals), max(y_vals))
 
     #subplot.set_aspect('equal', adjustable='box')
     subplot.xaxis.set_label_position('top')
     subplot.xaxis.set_ticks_position('top')
     subplot.invert_yaxis()
     subplot.set_title(title)
-    subplot.set_xlabel('x')
-    subplot.set_ylabel('y')
+    subplot.set_xlabel(xl)
+    subplot.set_ylabel(yl)
     subplot.grid(True)
 
 
@@ -113,9 +113,13 @@ def plot_points(points1, points2, title, subplot, ch):
 ci, hpvo = pvo(c0, cd, hd, hi, o)
 print(ci)
 o1, r, h = kvl([ci, c0, cd], hi, [o/2], hp, hd, hpvo, 3)
+print('квл')
+print(o1, r, h)
 coords1 = make_coords(r, h, hi, hd, hpvo, False)
 
-o1, r, h = knl([ci, c0, cd], hi, [o/2], hp, hd, hpvo, 3)
+o1, r, h = knl([ci, cd, c0], hi, [o/2], hp, hd, hpvo, 3)
+print('кнл')
+print(o1, r, h)
 coords2 = make_coords(r, h, hi, hd, hpvo, True)
 
 
@@ -123,8 +127,8 @@ coords2 = make_coords(r, h, hi, hd, hpvo, True)
 fig, axs = plt.subplots(1, 2, figsize=(12, 6))
 
 
-plot_points([[c0, cd], [0, 1000]], [], 'Вертикальное распределение скорости звука', axs[0], False)
-plot_points(coords1, coords2, 'Траектория лучей в подводном канале', axs[1], True)
+plot_points([[c0, cd], [0, 1000]], [], 'Вертикальное распределение скорости звука', axs[0], False, 'Скорость звука, м/c', 'Глубина, м')
+plot_points(coords1, coords2, 'Траектория лучей в подводном канале', axs[1], True, 'r, м', 'h, м')
 
 
 plt.tight_layout()
