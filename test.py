@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from scipy.special import legendre
 
 # Задаем параметры
-V1 = -2  # Примерное значение V1
+V1 = 0  # Примерное значение V1
 V2 = 1  # Примерное значение V2
 theta0 = np.pi * 0.2677  # Примерное значение угла theta0
 ka = [1.4, 2, 2.8]  # Примерное значение ka
@@ -49,9 +49,6 @@ def R(theta, ka, k):
     return np.abs(R_sum)
 
 
-# Строим график
-
-
 # Функция для чтения данных из файла
 def read_data(file_path):
     angles = []
@@ -64,9 +61,14 @@ def read_data(file_path):
                 values.append(float(value))
     return np.array(angles), np.array(values)
 
+f = ['proto/A5,8кГц_17.23.txt',  # 2 тип
+     'proto/B5,8кГц_17.20.txt',  # 4 тип
+     'proto/C5,8кГц_17.25.txt',  # 3 тип
+     'proto/D5,8кГц_17.46.txt',  # 1 тип
+     'proto/E11,8кГц_17.42.txt']  # 5 тип
 
 # Построение графика
-file_path = "proto/5,8кГц_17.20.txt"  # Замените на путь к вашему файлу
+file_path = f[2]  # Замените на путь к вашему файлу
 angles, values = read_data(file_path)
 values = values / max(values)
 
@@ -76,11 +78,11 @@ R_vals = [R(theta, ka[0], 1) for theta in angles]
 
 plt.figure(figsize=(8, 8))
 ax = plt.subplot(111, polar=True)
-ax.plot(angles, values, label="Эксперементальные данные")
-ax.plot(angles, R_vals / max(R_vals), label='Теоретические даные')
+ax.plot(angles, values, label="Эксперементальный график")
+ax.plot(angles, R_vals / max(R_vals), label='Теоретический график')
 
 
-ax.legend(loc="upper right")
+ax.legend(bbox_to_anchor=(0.8, 1))
 
 ax.set_theta_zero_location("N")
 plt.show()
