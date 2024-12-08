@@ -3,18 +3,18 @@ import matplotlib.pyplot as plt
 from scipy.special import legendre
 
 # Задаем параметры
-V1 = 2  # Примерное значение V1
-V2 = -1  # Примерное значение V2
+V1 = -2  # Примерное значение V1
+V2 = 1  # Примерное значение V2
 theta0 = np.pi * 0.2677  # Примерное значение угла theta0
-ka = [1.2, 2, 2.8]  # Примерное значение ka
+ka = [1.4, 2, 2.8]  # Примерное значение ka
 n_max = 5  # Максимальный номер суммы
-Dn = [[1.08, 1.4, 4.6, 25.8, 186.9, 1668.9],
+Dn = [[0.88, 1.02, 2.58, 12.22, 75.74, 578.29],
       [0.55, 0.55, 0.76, 2.23, 9.66, 51.31],
-      [0.37, 0.36, 0.36, 0.53, 1.48, 5.57]]  # Примерный массив дельта
+      [0.37, 0.36, 0.36, 0.53, 1.48, 5.57]]  # Примерный массив dn
 
-delta = [[18.56, 8.11, 1.59, 0.08, 0, 0],
+delta = [[25.75, 8.97, 3.07, 0.22, -0.01, 0],
          [51.16, -1.97, -10.4, -1.97, -0.15, -0.01],
-         [90.08, 24.23, 11.31, 10.54, 2.02, 0.2]]  # Примерный массив Dn
+         [90.08, 24.23, 11.31, 10.54, 2.02, 0.2]]  # Примерный массив дельта
 
 
 # Функция F(theta)
@@ -50,24 +50,44 @@ def R(theta, ka, k):
 
 
 # Строим график
-theta_vals = np.linspace(0, 2 * np.pi, 500)
-
-R_vals = [R(theta, ka[0], 0) for theta in theta_vals]
-
-R_vals2 = [R(theta, ka[1], 1) for theta in theta_vals]
-
-R_vals3 = [R(theta, ka[2], 2) for theta in theta_vals]
 
 
-# График в полярных координатах
+# Функция для чтения данных из файла
+def read_data(file_path):
+    angles = []
+    values = []
+    with open(file_path, 'r') as file:
+        for line in file:
+            if line.strip():  # Проверка на пустые строки
+                angle, value = line.replace(',', '.').split()  # Заменяем запятую на точку
+                angles.append(np.radians(float(angle)))  # Преобразование угла в радианы
+                values.append(float(value))
+    return np.array(angles), np.array(values)
+
+
+# Построение графика
+file_path = "proto/5,8кГц_17.20.txt"  # Замените на путь к вашему файлу
+angles, values = read_data(file_path)
+values = values / max(values)
+
+
+R_vals = [R(theta, ka[0], 1) for theta in angles]
+
+
 plt.figure(figsize=(8, 8))
 ax = plt.subplot(111, polar=True)
+ax.plot(angles, values, label="Эксперементальные данные")
+ax.plot(angles, R_vals / max(R_vals), label='Теоретические даные')
 
-ax.plot(theta_vals, R_vals / max(R_vals), label=f'ka={ka[0]}')
-ax.plot(theta_vals, R_vals2 / max(R_vals2), label=f'ka={ka[1]}')
-ax.plot(theta_vals, R_vals3 / max(R_vals3), label=f'ka={ka[2]}')
 
+ax.legend(loc="upper right")
 
 ax.set_theta_zero_location("N")
-ax.legend()
 plt.show()
+
+
+# Укажите путь к вашему файлу
+
+
+
+
