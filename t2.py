@@ -3,16 +3,16 @@ import matplotlib.pyplot as plt
 from scipy.special import legendre
 
 # Задаем параметры
-V1 = 2  # Примерное значение V1
-V2 = -1  # Примерное значение V2
+V1 = 1  # Примерное значение V1
+V2 = 0  # Примерное значение V2
 theta0 = np.pi * 0.2677  # Примерное значение угла theta0
-ka = [1.4, 2, 2.8]  # Примерное значение ka
+ka = [2.9, 2, 2.8]  # Примерное значение ka
 n_max = 5  # Максимальный номер суммы
-Dn = [[0.88, 1.02, 2.58, 12.22, 75.74, 578.29],
+Dn = [[0.35, 0.34, 0.33, 0.42, 1.02, 3.57],
       [0.55, 0.55, 0.76, 2.23, 9.66, 51.31],
       [0.37, 0.36, 0.36, 0.53, 1.48, 5.57]]  # Примерный массив dn
 
-delta = [[25.75, 8.97, 3.07, 0.22, -0.01, 0],
+delta = [[100.32, 32.49, -8.11, -13.16, -3.27, -0.37],
          [51.16, -1.97, -10.4, -1.97, -0.15, -0.01],
          [90.08, 24.23, 11.31, 10.54, 2.02, 0.2]]  # Примерный массив дельта
 
@@ -20,7 +20,7 @@ delta = [[25.75, 8.97, 3.07, 0.22, -0.01, 0],
 # Функция F(theta)
 def F(theta):
     if 0 <= theta <= theta0 or np.pi - theta0 <= theta <= np.pi:
-        return V1 * np.abs(np.cos(theta))
+        return V1 * np.cos(theta)
     elif theta0 <= theta <= np.pi - theta0:
         return V2 * np.sin(theta)
     else:
@@ -68,21 +68,23 @@ f = ['proto2/5,8кГц_17.23.txt',  # 2 тип
      'proto2/11,8кГц_17.42.txt']  # 5 тип
 
 # Построение графика
-file_path = f[1]  # Замените на путь к вашему файлу
+file_path = f[4]  # Замените на путь к вашему файлу
 angles, values = read_data(file_path)
 values = values / max(values)
 
+a = [i-45 for i in angles]
+a2 = [i+45 for i in angles]
 
-R_vals = [R(theta, ka[0], 1) for theta in angles]
+R_vals = [R(theta, ka[0], 1) for theta in a]
 
 
 plt.figure(figsize=(8, 8))
 ax = plt.subplot(111, polar=True)
-ax.plot(angles, values, label="Экспериментальный график")
-ax.plot(angles, R_vals / max(R_vals), label='Теоретический график')
+ax.plot(a2, values, label="Экспериментальный график")
+#ax.plot(angles, R_vals / max(R_vals), label='Теоретический график')
 
 
-ax.legend(bbox_to_anchor=(0.8, 1))
+ax.legend(bbox_to_anchor=(1.2, 1))
 
 ax.set_theta_zero_location("N")
 plt.show()
