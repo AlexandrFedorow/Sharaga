@@ -1,4 +1,6 @@
 import math
+import numpy as np
+
 
 x = [98, 88, 151, 29, 60, 37, 41, 69, 79, 151, 110, 131]
 y = [126, 108, 170, 139, 150, 155, 201, 225, 241, 255, 270, 300]
@@ -45,7 +47,7 @@ print('Ffact: ' + str(Ffact))
 Sy = math.sqrt( sum([(y[i]-y_cherta[i])**2 for i in range(len(x))]) / 10)
 print('Sy: ' + str(Sy))
 
-Sb0 = Sy * math.sqrt( sum([i**2 for i in x]) / sum([(i-av_x)**2 for i in x]))
+Sb0 = Sy * math.sqrt( sum([i**2 for i in x])) / (len(x) * math.sqrt(np.var(x)))#sum([(i-av_x)**2 for i in x]))
 print('Sb0: ' + str(Sb0))
 
 Sb1 = Sy / math.sqrt( sum([(i-av_x)**2 for i in x]) )
