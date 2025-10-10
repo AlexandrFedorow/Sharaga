@@ -2,8 +2,8 @@ import math
 import numpy as np
 
 
-x = [98, 88, 151, 29, 60, 37, 41, 69, 79, 151, 110, 131]
-y = [126, 108, 170, 139, 150, 155, 201, 225, 241, 255, 270, 300]
+x = [52, 110, 170, 141, 150, 160, 200, 230, 240, 260, 270, 300]
+y = [100, 90, 130, 31, 60, 39, 58, 70, 80, 150, 120, 130]
 
 
 av_x = sum(x)/len(x)
@@ -61,3 +61,16 @@ Srxy = math.sqrt( (1-Rxy)/10 )
 trxy = rxy/Srxy
 
 print('Srxy: ' + str(Srxy) + ' trxy: ' + str(trxy))
+
+db0 = 2.26 * Sb0
+db1 = 2.26 * Sb1
+print('db0: ' + str(db0) + ' db1: ' + str(db1))
+
+prog = b0
+print(prog)
+
+Syzv = math.sqrt(sum([(y[i]-y_cherta[i])**2 for i in range (len(y))])/(10)) * math.sqrt(1+1/12+(av_x)**2/sum([(i-av_x)**2 for i in x]))
+print(Syzv)
+
+dyzv = 2.26 * Syzv
+print(dyzv)
